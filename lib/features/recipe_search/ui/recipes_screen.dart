@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_app/core/theme/app_palette.dart';
 import 'package:recipe_app/features/favourite_recipe/ui/favourites_screen.dart';
 import 'package:recipe_app/features/recipe_info/bloc/recipe_info_bloc.dart';
 import 'package:recipe_app/features/recipe_search/bloc/recipes_bloc.dart';
@@ -35,7 +36,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
           textEditingController: searchTextEditingController,
           onPressed: () {
             context.read<RecipesBloc>().add(RecipeSearchEvent(
-                searchText: searchTextEditingController.text));
+                  searchText: searchTextEditingController.text.trim(),
+                ));
           },
         ),
         actions: [
@@ -57,7 +59,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
           if (state is RecipesLoadingState) {
             return const Center(
               child: CircularProgressIndicator(
-                color: Colors.red,
+                color: AppPallete.gradient2,
               ),
             );
           } else if (state is RecipesSuccessState) {

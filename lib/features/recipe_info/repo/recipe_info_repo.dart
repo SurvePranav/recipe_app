@@ -13,10 +13,8 @@ class RecipeInfoRepo {
       final http.Response res = await http.get(Uri.parse(
           '${AppSecrets.recipeInstructionsUrl}/$id/analyzedInstructions?apiKey=${AppSecrets.apiKey}'));
       if (res.statusCode == 200) {
-        final List<RecipeInstructionsModel> response =
-            recipeInstructionsModelFromJson(res.body);
-        recipeInstructions = response;
-        log('got instructions: ${response.first.steps!.length}');
+        recipeInstructions = recipeInstructionsModelFromJson(res.body);
+        log('got instructions: ${recipeInstructions.first.steps!.length}');
       } else {
         throw Exception('could not load recipe');
       }

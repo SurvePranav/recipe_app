@@ -17,13 +17,15 @@ class FavoritesRepository {
   }
 
   static Future<List<int>> getFavoritesId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? jsonString = prefs.getString(_key);
-    if (jsonString != null) {
-      List<dynamic> jsonList = jsonDecode(jsonString);
-      return jsonList.map((json) => json['id'] as int).toList();
-    }
-    return [];
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String? jsonString = prefs.getString(_key);
+    // if (jsonString != null) {
+    //   List<dynamic> jsonList = jsonDecode(jsonString);
+    //   return jsonList.map((json) => json['id'] as int).toList();
+    // }
+    List<Result> favourites = await getFavorites();
+
+    return favourites.map((e) => e.id!).toList();
   }
 
   static Future<void> toggleFavorite(Result result) async {
@@ -41,7 +43,6 @@ class FavoritesRepository {
     }
 
     favouritesList = favorites.map((e) => e.id!).toList();
-
     String jsonString = jsonEncode(favorites);
     await prefs.setString(_key, jsonString);
   }

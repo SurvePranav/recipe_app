@@ -5,17 +5,12 @@ import 'package:recipe_app/core/theme/app_palette.dart';
 import 'package:recipe_app/features/favourite_recipe/bloc/favourites_bloc.dart';
 import 'package:recipe_app/features/recipe_search/models/recipe_response.dart';
 
-class RecipeCard extends StatefulWidget {
+class RecipeCard extends StatelessWidget {
   final VoidCallback onCardClick;
   final Result result;
   const RecipeCard(
       {super.key, required this.result, required this.onCardClick});
 
-  @override
-  State<RecipeCard> createState() => _RecipeCardState();
-}
-
-class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -27,9 +22,9 @@ class _RecipeCardState extends State<RecipeCard> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Hero(
-                tag: widget.result.id!,
+                tag: result.id!,
                 child: Image.network(
-                  widget.result.image!,
+                  result.image!,
                   height: 200,
                   fit: BoxFit.cover,
                   width: double.infinity,
@@ -41,7 +36,7 @@ class _RecipeCardState extends State<RecipeCard> {
           ),
         ),
         GestureDetector(
-          onTap: widget.onCardClick,
+          onTap: onCardClick,
           child: Container(
             height: 200,
             margin: const EdgeInsets.all(16).copyWith(bottom: 4),
@@ -59,7 +54,7 @@ class _RecipeCardState extends State<RecipeCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.result.title!,
+                  result.title!,
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -77,21 +72,19 @@ class _RecipeCardState extends State<RecipeCard> {
                             onPressed: () {
                               context.read<FavouritesBloc>().add(
                                     ToggleFavouriteEvent(
-                                      recipe: widget.result,
+                                      recipe: result,
                                     ),
                                   );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: favouritesList
-                                          .contains(widget.result.id!)
+                                  content: favouritesList.contains(result.id!)
                                       ? const Text('Removed From favourites')
                                       : const Text('Added to favourites'),
                                   duration: const Duration(seconds: 1),
                                 ),
                               );
-                              setState(() {});
                             },
-                            icon: favouritesList.contains(widget.result.id!)
+                            icon: favouritesList.contains(result.id!)
                                 ? const Icon(
                                     Icons.favorite,
                                     color: Colors.white,
